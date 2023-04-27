@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Product = require('./collections/Product');
-const Tag = require('./collections/Tag');
-const User = require('./collections/User');
+const Product = require('../model/Product');
+const Tag = require('../model/Tag');
+const User = require('../model/User');
 
 mongoose.connect('mongodb://localhost:27017/productHuntDB');
 
@@ -9,19 +9,19 @@ const addProductToDB = async (inputBody)=>{
     try 
     {
         const product = await Product.create({
-            name:inputBody["name"],
-            visitUrl:inputBody["visitUrl"],
-            iconUrl: inputBody["iconUrl"],
-            longDescription: inputBody["longDescription"],
-            shortDescription: inputBody["shortDescription"],
-            createdOn:inputBody["createdOn"],
-            updatedOn:inputBody["updatedOn"],
-            createdBy:inputBody["createdBy"],
-            updatedBy:inputBody["updatedBy"],
-            tags:[...inputBody["tags"]],
-            comments:[...inputBody["comments"]],
-            images:[...inputBody["images"]],
-            upvoters:[...inputBody["upvoters"]]
+            name:inputBody.name,
+            visitUrl:inputBody.visitUrl,
+            iconUrl: inputBody.iconUrl,
+            longDescription: inputBody.longDescription,
+            shortDescription: inputBody.shortDescription,
+            createdOn:inputBody.createdOn,
+            updatedOn:inputBody.updatedOn,
+            createdBy:inputBody.createdBy,
+            updatedBy:inputBody.updatedBy,
+            tags:[...inputBody.tags],
+            comments:[...inputBody.comments],
+            images:[...inputBody.images],
+            upvoters:[...inputBody.upvoters]
         })
         console.log(product);
         return product;
@@ -34,11 +34,138 @@ const addProductToDB = async (inputBody)=>{
 
 }
 
+const deleteProductFromDB= async(id,inputBody) =>{
+    try {
+        const product = await Product.findById(id);
+        if(!product) throw new Error("Product not found");
+
+        if(product.createdBy != inputBody.user) throw new Error("User not authorized to delete this product");
+
+        const result=await Product.deleteOne({_id:id})
+        // await Product.save();
+        return result;
+    } catch (error) {
+        console.log(error.message);
+        return;
+
+    }
+}
+
+//add comment to product
+const addCommentToProduct = async(inputBody,id) => {
+
+    try {
+        const product = await Product.findById(id);//checking product exists or not
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const user = await User.findById(inputBody.comment.createdBy); //checking user exists or not
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const commentToAdd = { 
+            createdBy: inputBody.comment.createdBy,
+            desp: inputBody.comment.desp 
+        };
+
+        const filter = {_id:id};
+        const update = {
+            comments : [...product.comments,commentToAdd],
+            updatedOn: Date.now()
+        }  
+        let updatedProduct = await Product.findOneAndUpdate(filter,update,{new:true});
+
+        return commentToAdd;
+    } catch (error) {
+        console.log(error.message);
+        return;
+    }
+};
+
+const removeCommentfromProduct = async(inputBody,id) =>{
+    try {
+        const product = await Product.findById(id); //checking if product exists or not
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const user = await User.findById(inputBody.comment.user);//checking if user exists or not
+        if (!user) {
+            throw new Error("User not authenticated");
+        }
+        if(product.createdBy != inputBody.comment.user)  throw new Error("User not authorized");//check if user is the creator of product
+
+        const result = await Product.updateOne({_id:id},{$pull: {"comments":{ "_id":inputBody.comment.id }}}) ;
+        return result;
+    } catch (error) {
+        console.log(error.message);
+        return;
+    }
+
+}
+
+
+
+
+const addTagToProduct = async(inputBody,id) => {
+
+    try {
+        const product = await Product.findById(id);//checking product exists or not
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const user = await User.findById(inputBody.user); //checking user exists or not
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const tag = await Tag.findById(inputBody.tag.id);//check if tag exists or not
+        if (!tag) {
+            throw new Error("Tag not found");
+        }
+        if(product.tags.includes(inputBody.tag.id)) throw new Error("Tag already exists")//check if tag already exists or not 
+
+        const filter = {_id:id};
+        const update = {
+            tags : [...product.tags,inputBody.tag.id],
+            updatedOn: Date.now()
+        }  
+        let updatedProduct = await Product.findOneAndUpdate(filter,update,{new:true});
+
+        return updatedProduct;
+    } catch (error) {
+        console.log(error.message);
+        return;
+    }
+};
+
+const removeTagfromProduct = async(inputBody,id) =>{
+    try {
+        const product = await Product.findById(id); //checking if product exists or not
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const user = await User.findById(inputBody.user);//checking if user exists or not
+        if (!user) {
+            throw new Error("User not authenticated");
+        }
+        if(!product.tags.includes(inputBody.tag.id)) throw new Error("Tag not found")//check if tag already exists or not 
+        const updatedTags=product.tags
+        const index = updatedTags.indexOf(inputBody.tag.id);
+        const x = updatedTags.splice(index, 1);
+        const result = await Product.findByIdAndUpdate({_id:id},{tags:updatedTags},{new:true});
+
+        return result;
+    } catch (error) {
+        console.log(error.message);
+        return;
+    }
+
+}
+
 const addTagToDB =async (inputBody)=>{
     try 
     {
         const tag = await Tag.create({
-            name:inputBody["name"]
+            name:inputBody.name
         })
         console.log(tag);
         return tag;
@@ -55,9 +182,9 @@ const addUserToDB = async (inputBody)=>{
     try 
     {
         const user = await User.create({
-            name:inputBody["name"],
-            email:inputBody["email"],
-            password:inputBody["password"]
+            name:inputBody.name,
+            email:inputBody.email,
+            password:inputBody.password
         })
         console.log(user);
         return user;
@@ -70,57 +197,6 @@ const addUserToDB = async (inputBody)=>{
     
 }
  
-//add comment to product
-const addCommentToProduct = async(inputBody,id) => {
-    const product = await Product.findById(id);
-    if (!product) {
-        throw new Error("Product not found");
-    }
-    const user = await User.findById(inputBody["createdBy"]);
-    if (!user) {
-        throw new Error("User not found");
-    }
-    const comment = { createdBy: inputBody["createdBy"], desp: inputBody["desp"] };
-    product["comments"] = [...product["comments"],comment];  
-    product["updatedOn"] = Date.now();
-    await product.save();
-    return comment;
-};
-
-//add tag to product
-const addTagToProduct = async(inputBody,id) => {
-    const product = await Product.findById(id);
-    if (!product) {
-        throw new Error("Product not found");
-    }
-    
-    const tagId = inputBody["id"];
-    product["tags"]= [...product["tags"],tagId];
-    product["updatedOn"] = Date.now();
-    await product.save();
-    return product;
-};
-
-
-const deleteProductFromDB= async(id,inputBody) =>{
-    try {
-        const product = await Product.findById(id);
-        if(!product) throw new error;
-
-        if(!(product["createdBy"] == inputBody["user"])) throw new Error("User not authorized");
-
-        const result=await Product.deleteOne({_id:`${id}`})
-        await Product.save();
-        return result;
-    } catch (error) {
-        console.log(error.message);
-        return;
-
-    }
-}
-
-
-
 const getProductFromDBById= async (id) =>{
     try {
         const result = await Product.find({_id:`${id}`})
@@ -164,13 +240,26 @@ const getProductFromDB = async (page,limit)=>{
 
 const changeProductToDB = async (id,inputBody) =>{
     try {
+        const product = await Product.findById(id); //checking if product exists or not
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        const userinDB = await User.find({_id:inputBody.user}); //checking if product exists or not
+        console.log(userinDB);
+        if (!userinDB) {
+            throw new Error("User not authenticated");
+        }
+        if(product.createdBy != inputBody.user) throw new Error("User not authorized to change the product")
+        
         const filter = {_id : id};
-        const update=inputBody;
-        console.log(update);
+        const update={
+            ...(inputBody.productBody),
+            updatedOn:Date.now(),
+            updatedBy:inputBody.productBody.user
+        };
 
-        let product = await Product.findOneAndUpdate(filter,update);
-        product=await Product.findOne(filter);
-        return product; 
+        let result = await Product.findOneAndUpdate(filter,update,{new:true});
+        return result; 
     } catch (error) {
         console.log(error.message);
         return;
@@ -178,7 +267,7 @@ const changeProductToDB = async (id,inputBody) =>{
 
 }
 
-module.exports= {addProductToDB, addTagToDB, addUserToDB,deleteProductFromDB,getProductFromDBById,getProductFromDB, addCommentToProduct,addTagToProduct,changeProductToDB};
+module.exports= {addProductToDB, addTagToDB, addUserToDB,deleteProductFromDB,getProductFromDBById,getProductFromDB, addCommentToProduct, removeCommentfromProduct,addTagToProduct,changeProductToDB,addTagToProduct,removeTagfromProduct};
 
 
 /////////////////

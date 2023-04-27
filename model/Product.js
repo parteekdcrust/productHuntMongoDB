@@ -11,7 +11,19 @@ const CommentSchema= new mongoose.Schema({
         minlength:1,
         maxlength:200,
         trim:true,
-    }
+    },
+    createdOn: {
+        type:Date,
+        default : Date.now(),
+        immutable:true
+        // set(value) {
+        //     return this.createdOn;
+        // }
+    }, 
+    updatedOn: {
+        type:Date,
+        default: Date.now()
+    }   
 });
 
 const ProductSchema= new mongoose.Schema({
