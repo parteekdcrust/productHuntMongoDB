@@ -4,8 +4,8 @@ Product Hunt is an online community platform where makers come to launch their p
 
 **_Installation_**
 
-- To install it first of all clone this repo.
-  After cloning reun the following command to install all the packages included in the project:-
+- To install it first of all clone this repo by running the following command in terminal `git clone https://github.com/parteekdcrust/productHuntMongoDB.git`
+  After cloning run the following command to install all the packages included in the project:-
   `npm i`
 - After installing node packages create a file named
   `.env`
