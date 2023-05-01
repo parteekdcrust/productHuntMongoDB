@@ -11,6 +11,13 @@ const CommentSchema= new mongoose.Schema({
         minlength:1,
         maxlength:200,
         trim:true,
+        validate: {
+            validator: function(v) {
+                return /^[^<>#$\\/]*[\s,.-]*[^<>#$\\/]*$/.test(v);
+            },
+            message: (props) =>
+                `${props.value} contains special characters, only alphanumeric characters and spaces are allowed!`,
+        },
     },
     createdOn: {
         type:Date,
@@ -35,7 +42,7 @@ const ProductSchema= new mongoose.Schema({
         minlength:1,
         validate: {
             validator: function(v) {
-                return /^[a-zA-Z0-9 ]*$/.test(v);
+                return /^[^<>#$\\/]*[\s,.-]*[^<>#$\\/]*$/.test(v);
             },
             message: (props) =>
                 `${props.value} contains special characters, only alphanumeric characters and spaces are allowed!`,
@@ -65,7 +72,7 @@ const ProductSchema= new mongoose.Schema({
         maxlength: 100,
         validate: {
             validator: function(v) {
-                return /^[a-zA-Z0-9 ]*$/.test(v);
+                return /^[^<>#$\\/]*[\s,.-]*[^<>#$\\/]*$/.test(v);
             },
             message: (props) =>
                 `${props.value} contains special characters, only alphanumeric characters and spaces are allowed!`,
@@ -80,7 +87,7 @@ const ProductSchema= new mongoose.Schema({
         maxlength: 1000,
         validate: {
             validator: function(v) {
-                return /^[a-zA-Z0-9 ]*$/.test(v);
+                return /^[^<>#$\\/]*[\s,.-]*[^<>#$\\/]*$/.test(v);
             },
             message: (props) =>
                 `${props.value} contains special characters, only alphanumeric characters and spaces are allowed!`,
