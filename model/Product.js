@@ -127,5 +127,10 @@ const ProductSchema= new mongoose.Schema({
 });
 
 
+const Product= mongoose.model("Product",ProductSchema);
+const Comment = mongoose.model("Comment",CommentSchema);
 
-module.exports= mongoose.model("Product",ProductSchema);
+module.exports = {
+    Product : Product,
+    Comment: Comment
+};
