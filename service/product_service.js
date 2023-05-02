@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 try {
-  mongoose.connect("mongodb://localhost:27017/productHuntDB");
+  mongoose.connect("mongodb://0.0.0.0:27017/productHuntDB");
 } catch (error) {
   console.log(error.message);
   return;
@@ -143,7 +143,7 @@ const removeCommentfromProduct = async (id, inputBody) => {
 //1.(e)update tag in product
 
 //add tag in product
-const addTagToProduct = async (id,inputBody) => {
+const addTagToProduct = async (id, inputBody) => {
   try {
     const product = await Product.findById(id); //checking product exists or not
     if (!product) {
@@ -164,7 +164,7 @@ const addTagToProduct = async (id,inputBody) => {
     const update = {
       tags: [...product.tags, inputBody.tagBody.id],
       updatedOn: Date.now(),
-      updatedBy:inputBody.user
+      updatedBy: inputBody.user,
     };
     let updatedProduct = await Product.updateOne(filter, update, { new: true });
 
@@ -197,7 +197,7 @@ const removeTagfromProduct = async (id, inputBody) => {
     const update = {
       tags: updatedTags,
       updatedOn: Date.now(),
-      updatedBy:inputBody.user
+      updatedBy: inputBody.user,
     };
     const result = await Product.updateOne(filter, update, {
       new: true,
@@ -209,46 +209,43 @@ const removeTagfromProduct = async (id, inputBody) => {
   }
 };
 
-const getProductById= async (id) =>{
-    try {
-        const result = await Product.findById(id);
-        if(!result) throw new Error("Product not found");
-        return result;
-    } catch (error) {
-        console.log(error.message);
-        return;
-    }
-}
+const getProductById = async (id) => {
+  try {
+    const result = await Product.findById(id);
+    if (!result) throw new Error("Product not found");
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    return;
+  }
+};
 
-const getProduct = async (page,limit)=>{
-    try {
-        const skipIndex = (page - 1) * limit;    //limit set to 10 by default
-        const products = await Product.aggregate([
-            {
-              $project: {
-                name: 1,
-                iconUrl: 1,
-                visitUrl: 1,
-                shortDescription:1,
-                tags:1,
-                createdOn:1,
-                commentsCount: { $size: "$comments" },
-                upvotesCount: { $size: "$upvoters" },
-              }
-            },
-              { $skip: skipIndex },
-              { $limit: limit },
-            ])
-        if(!products[0]) throw new Error("Products not found");
-        return products;
-    } catch (error) {
-        console.log(error.message);
-        return;
-        
-    }
-}
-
-
+const getProduct = async (page, limit) => {
+  try {
+    const skipIndex = (page - 1) * limit; //limit set to 10 by default
+    const products = await Product.aggregate([
+      {
+        $project: {
+          name: 1,
+          icon: 1,
+          url: 1,
+          shortDescription: 1,
+          tags: 1,
+          createdOn: 1,
+          commentsCount: { $size: "$comments" },
+          upvotesCount: { $size: "$upvoters" },
+        },
+      },
+      { $skip: skipIndex },
+      { $limit: limit },
+    ]);
+    if (!products[0]) throw new Error("Products not found");
+    return products;
+  } catch (error) {
+    console.log(error.message);
+    return;
+  }
+};
 
 module.exports = {
   addProductToDB,
@@ -259,5 +256,5 @@ module.exports = {
   addTagToProduct,
   removeTagfromProduct,
   getProductById,
-  getProduct
+  getProduct,
 };
