@@ -12,3 +12,9 @@ Product Hunt is an online community platform where makers come to launch their p
 - In the .env file you should write the following code:
   `PORT= port no.`
 - If u don't specify the port no. by default ur port no will be `5000`.
+
+**_Connecting database_**
+
+- If you are facing problem while connecting to the database with the following code `mongoose.connect("mongodb://localhost:27017/productHuntDB");`
+  replace the localhost with `0.0.0.0` as done in the following line:
+  `mongoose.connect("mongodb://0.0.0.0:27017/productHuntDB");`

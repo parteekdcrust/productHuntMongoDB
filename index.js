@@ -95,7 +95,7 @@ app.get("/products/:id", async (req, res) => {
   const result = await ProductService.getProductById(id);
   if (!result)
     res.status(404).json({
-      message: "error occured",
+      message: `error occured`,
     });
   else res.status(200).json(result);
 });
@@ -132,7 +132,7 @@ app.delete("/tags/:id", async (req, res) => {
   const result = await TagService.deleteTag(id);
   if (!result)
     res.status(400).json({
-      message: "error occured",
+      message: "Tag not deleted from databse",
     });
   else res.status(200).send(result);
 });
@@ -172,7 +172,7 @@ app.post("/users", async (req, res) => {
   else res.status(201).json(result);
 });
 
-//2.(b) Delete user
+//3.(b) Delete user
 app.delete("/users/:id", async (req, res) => {
   const id = req.params.id;
   const result = await UserService.deleteUser(id);
@@ -183,7 +183,7 @@ app.delete("/users/:id", async (req, res) => {
   else res.status(200).send(result);
 });
 
-//2.(c) get user from db
+//3.(c) get user from db
 app.get("/users", async (req, res) => {
   const result = await UserService.getUserFromDB();
   if (!result)
@@ -193,7 +193,7 @@ app.get("/users", async (req, res) => {
   else res.status(200).send(result);
 });
 
-//2.(d) get user by id from db
+//3.(d) get user by id from db
 app.get("/users/:id", async (req, res) => {
   const id = req.params.id;
   const result = await UserService.getUserByIdFromDB(id);
@@ -204,7 +204,7 @@ app.get("/users/:id", async (req, res) => {
   else res.status(200).send(result);
 });
 
-//2.(e) modify user in db
+//3.(e) modify user in db
 
 app.patch("/users/:id", async (req, res) => {
   const id = req.params.id;
