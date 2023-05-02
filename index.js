@@ -72,7 +72,7 @@ app.patch("/products/:id/comment", async (req, res) => {
   else res.status(201).json(result);
 });
 
-//1.(e) Add/remove tag to/from product
+//1.(e) Add/remove tag to/from product.
 app.patch("/products/:id/tag", async (req, res) => {
   const inputBody = req.body;
   const id = req.params.id;
