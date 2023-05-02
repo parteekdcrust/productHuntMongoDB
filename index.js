@@ -62,7 +62,6 @@ app.patch("/products/:id/comment", async (req, res) => {
     const comment = new Comment(inputBody.commentBody); //making new comment using "new" keyword
     result = await ProductService.addCommentToProduct(id, inputBody, comment);
   } else {
-    console.log("inside else");
     result = await ProductService.removeCommentfromProduct(id, inputBody);
   }
   if (!result)
