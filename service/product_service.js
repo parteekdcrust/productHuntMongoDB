@@ -239,7 +239,7 @@ const getProduct = async (page, limit) => {
       { $skip: skipIndex },
       { $limit: limit },
     ]);
-    if (!products[0]) throw new Error("Products not found");
+    if (!products[0]) throw new Error("No more products");
     return products;
   } catch (error) {
     console.log(error.message);
