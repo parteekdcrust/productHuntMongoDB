@@ -34,10 +34,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (password) {
-        var re = /^.{8,}$/;
+        var re =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return re.test(password);
       },
-      message: (props) => `${props.value} need to be atleast 8 characters long`,
+      message: (props) =>
+        `${props.value} need to be atleast 8 characters long contains at least a uppercase char, a lowercase char, a number and a special character(@$!%*?&)`,
     },
   },
 });
