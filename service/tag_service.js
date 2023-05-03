@@ -7,7 +7,7 @@ const addTag = async (tag) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -20,7 +20,7 @@ const deleteTag = async (id) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -32,7 +32,7 @@ const getTagFromDB = () => {
     return tag;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -44,7 +44,7 @@ const getTagByIdFromDB = (id) => {
     return tag;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 

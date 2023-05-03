@@ -7,7 +7,7 @@ const addUser = async (user) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -20,7 +20,7 @@ const deleteUser = async (id) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -32,7 +32,7 @@ const getUserFromDB = async () => {
     return user;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -44,7 +44,7 @@ const getUserByIdFromDB = async (id) => {
     return user;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -60,7 +60,7 @@ const modifyUser = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 module.exports = {

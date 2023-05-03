@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-try {
-  mongoose.connect("mongodb://0.0.0.0:27017/productHuntDB");
-} catch (error) {
-  console.log(error.message);
-  return;
-}
+
 const { Product } = require("../model/product");
 const Tag = require("../model/tag");
 const User = require("../model/user");
@@ -16,7 +11,7 @@ const addProductToDB = async (product) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -39,7 +34,7 @@ const deleteProductFromDB = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -70,7 +65,7 @@ const changeProductToDB = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -102,7 +97,7 @@ const addCommentToProduct = async (id, inputBody, comment) => {
     return updatedProduct;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -136,7 +131,7 @@ const removeCommentfromProduct = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -171,7 +166,7 @@ const addTagToProduct = async (id, inputBody) => {
     return updatedProduct;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -205,7 +200,7 @@ const removeTagfromProduct = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -216,7 +211,7 @@ const getProductById = async (id) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
@@ -243,7 +238,7 @@ const getProduct = async (page, limit) => {
     return products;
   } catch (error) {
     console.log(error.message);
-    return;
+    throw error;
   }
 };
 
