@@ -10,7 +10,8 @@ Product Hunt is an online community platform where makers come to launch their p
 - After installing node packages create a file named
   `.env`
 - In the .env file you should write the following code:
-  `PORT= port no.`
+  `PORT= port no.`,
+  `MONGO_URI="mongodb://{localhost}:27017/{databasename}`
 - If u don't specify the port no. by default ur port no will be `5000`.
 
 **_Connecting database_**

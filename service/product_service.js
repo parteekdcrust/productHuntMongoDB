@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
-
+// try {
+//   mongoose.connect("mongodb://0.0.0.0:27017/productHuntDB");
+// } catch (error) {
+//   console.log(error.message);
+//   return;
+// }
 const { Product } = require("../model/product");
 const Tag = require("../model/tag");
 const User = require("../model/user");
+const db = require("../utils/dbutils");
 
 //1.(a) add product to database
 const addProductToDB = async (product) => {
@@ -11,7 +17,7 @@ const addProductToDB = async (product) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -34,7 +40,7 @@ const deleteProductFromDB = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -65,7 +71,7 @@ const changeProductToDB = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -97,7 +103,7 @@ const addCommentToProduct = async (id, inputBody, comment) => {
     return updatedProduct;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -131,7 +137,7 @@ const removeCommentfromProduct = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -166,7 +172,7 @@ const addTagToProduct = async (id, inputBody) => {
     return updatedProduct;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -200,7 +206,7 @@ const removeTagfromProduct = async (id, inputBody) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -211,7 +217,7 @@ const getProductById = async (id) => {
     return result;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
@@ -238,7 +244,7 @@ const getProduct = async (page, limit) => {
     return products;
   } catch (error) {
     console.log(error.message);
-    throw error;
+    return;
   }
 };
 
