@@ -104,11 +104,11 @@ app.patch("/products/:id/tag", async (req, res) => {
 app.get("/products/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const result = await ProductService.getProductById(id);
-  res.status(200).json(result);
+    const result = await ProductService.getProductById(id);
+    res.status(200).json(result);
   } catch (error) {
     res.status(404).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -117,12 +117,12 @@ app.get("/products/:id", async (req, res) => {
 app.get("/products/", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const result = await ProductService.getProduct(page, limit);
-  res.status(200).json(result);
+    const limit = parseInt(req.query.limit) || 10;
+    const result = await ProductService.getProduct(page, limit);
+    res.status(200).json(result);
   } catch (error) {
     res.status(404).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -133,9 +133,9 @@ app.get("/products/", async (req, res) => {
 app.post("/tags", async (req, res) => {
   try {
     const inputBody = req.body;
-  const tag = new Tag(inputBody);
-  const result = await TagService.addTag(tag);
-  res.status(201).json(result);
+    const tag = new Tag(inputBody);
+    const result = await TagService.addTag(tag);
+    res.status(201).json(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -147,11 +147,11 @@ app.post("/tags", async (req, res) => {
 app.delete("/tags/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const result = await TagService.deleteTag(id);
-  res.status(200).send(result);
+    const result = await TagService.deleteTag(id);
+    res.status(200).send(result);
   } catch (error) {
     res.status(400).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -159,8 +159,8 @@ app.delete("/tags/:id", async (req, res) => {
 //2.(c) get tag from db
 app.get("/tags", async (req, res) => {
   try {
-  const result = await TagService.getTagFromDB();
-  res.status(200).send(result);
+    const result = await TagService.getTagFromDB();
+    res.status(200).send(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -172,8 +172,8 @@ app.get("/tags", async (req, res) => {
 app.get("/tags/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const result = await TagService.getTagByIdFromDB(id);
-  res.status(200).send(result);
+    const result = await TagService.getTagByIdFromDB(id);
+    res.status(200).send(result);
   } catch (error) {
     res.status(404).json({
       message: error.message,
@@ -187,9 +187,9 @@ app.get("/tags/:id", async (req, res) => {
 app.post("/users", async (req, res) => {
   try {
     const inputBody = req.body;
-  const user = new User(inputBody);
-  const result = await UserService.addUser(user);
-  res.status(201).json(result);
+    const user = new User(inputBody);
+    const result = await UserService.addUser(user);
+    res.status(201).json(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -201,8 +201,8 @@ app.post("/users", async (req, res) => {
 app.delete("/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const result = await UserService.deleteUser(id);
-  res.status(200).send(result);
+    const result = await UserService.deleteUser(id);
+    res.status(200).send(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
@@ -213,21 +213,21 @@ app.delete("/users/:id", async (req, res) => {
 //3.(c) get user from db
 app.get("/users", async (req, res) => {
   try {
-  const result = await UserService.getUserFromDB();
-  res.status(200).send(result);
+    const result = await UserService.getUserFromDB();
+    res.status(200).send(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
     });
-  } 
+  }
 });
 
 //3.(d) get user by id from db
 app.get("/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const result = await UserService.getUserByIdFromDB(id);
-  res.status(200).send(result);
+    const result = await UserService.getUserByIdFromDB(id);
+    res.status(200).send(result);
   } catch (error) {
     res.status(404).json({
       message: error.message,
@@ -240,9 +240,9 @@ app.get("/users/:id", async (req, res) => {
 app.patch("/users/:id", async (req, res) => {
   try {
     const id = req.params.id;
-  const inputBody = req.body;
-  const result = await UserService.modifyUser(id, inputBody);
-  res.status(200).send(result);
+    const inputBody = req.body;
+    const result = await UserService.modifyUser(id, inputBody);
+    res.status(200).send(result);
   } catch (error) {
     res.status(400).json({
       message: error.message,
