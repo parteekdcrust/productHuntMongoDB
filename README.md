@@ -18,4 +18,4 @@ Product Hunt is an online community platform where makers come to launch their p
 
 - If you are facing problem while connecting to the database with the following code `mongoose.connect("mongodb://localhost:27017/productHuntDB");`
   replace the localhost with `0.0.0.0` as done in the following line:
-  `mongoose.connect("mongodb://0.0.0.0:27017/productHuntDB");`
+  `mongoose.connect("mongodb://0.0.0.0:27017/{databasename}");`
